@@ -61,6 +61,46 @@ VALUES
     ('Company JJ', 'Manufacturing', 370.0, 3100, 1, 20, 12, 7.6),
     ('Company KK', 'Healthcare', 150.2, 3400, 0, 16, 8, 5.3);
 
+-- Group the data in a new way using a CASE statement.
+SELECT
+  CASE
+    WHEN industry = 'Technology' THEN 'Tech'
+    WHEN industry = 'Retail' THEN 'Retail'
+    WHEN industry = 'Energy' THEN 'Energy'
+    WHEN industry = 'Healthcare' THEN 'Healthcare'
+    WHEN industry = 'Financials' THEN 'Finance'
+    WHEN industry = 'Telecommunications' THEN 'Telecom'
+    ELSE 'Other'
+  END AS industry_group,
+  COUNT(*) AS num_companies
+FROM fortune_companies
+GROUP BY industry_group
+ORDER BY num_companies DESC;
+
+-- Use a HAVING clause to determine something interesting about the data per category.
+SELECT industry,
+  ROUND(AVG(avg_employee_tenure), 2) AS avg_employee_tenure
+FROM fortune_companies
+GROUP BY industry
+HAVING ROUND(AVG(avg_employee_tenure), 2) > 6
+ORDER BY avg_employee_tenure DESC;
+
+-- Use logical operators like AND or OR to filter the data in an interesting way.
+SELECT *
+FROM fortune_companies
+WHERE industry = 'Technology'
+AND (avg_employee_tenure > 6 OR healthcare_benefits = 1);
+
+/* Use an aggregate function like AVG, SUM, COUNT, MAX, and/or MIN to return 
+   summary statistics about the data.
+*/
+SELECT
+  ROUND(AVG(revenue), 2) AS avg_revenue,
+  ROUND(SUM(employees), 2) AS total_employees,
+  ROUND(MAX(avg_employee_tenure), 2) AS max_avg_employee_tenure,
+  ROUND(MIN(avg_employee_tenure), 2) AS min_avg_employee_tenure
+FROM fortune_companies;
+
 
 
 
