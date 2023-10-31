@@ -1,0 +1,45 @@
+Company Marathon Database Challenge
+CREATE TABLE marathon (
+    ID INTEGER PRIMARY KEY,
+    participant_name TEXT,
+    completion_fraction REAL,
+    has_run_marathon INTEGER
+);
+
+INSERT INTO marathon (participant_name, completion_fraction, has_run_marathon)
+VALUES
+    ('Charlotte Chaze', 0.8534, 1),
+    ('Maria Rodriguez', 1.0000, 0),
+    ('Hassan Ali', 0.7065, 0),
+    ('Leila Kim', 0.9545, 1),
+    ('Javier Martinez', 0.8055, 0),
+    ('Fatima Ahmed', 0.6044, 1),
+    ('Priya Patel', 0.7564, 0),
+    ('Mohammed Rahman', 0.4032, 0),
+    ('Sara Nguyen', 0.9032, 1),
+    ('Rahul Sharma', 0.5513, 0);
+
+-- Select every participant name and the percent of the marathon that they completed.
+SELECT participant_name, completion_fraction * 100 AS percent_completed
+FROM marathon;
+
+/* Select every participant name and the percent of the marathon that they completed.
+   Show the percent of the marathon completed rounded to one decimal place.
+*/
+SELECT participant_name, ROUND (completion_fraction * 100,1) AS percent_completed
+FROM marathon;
+
+/* For this query, show how many employees completed each quarter of the marathon
+   (75% or more, 50%, 25%, or under 25%).
+*/
+SELECT
+CASE
+      WHEN ROUND(completion_fraction*100,0) >= 75 then '75% or more'
+      WHEN ROUND(completion_fraction*100,0) >= 50 then '50%'
+      WHEN ROUND(completion_fraction*100,0) >= 25 then '25%'
+      ELSE 'Under 25%'
+END AS completion_quarter,
+COUNT(*) AS employee_count
+FROM marathon
+GROUP BY completion_quarter
+ORDER BY completion_quarter DESC;
